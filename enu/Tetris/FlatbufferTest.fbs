@@ -1,0 +1,8 @@
+namespace fbe;
+
+enum Color : byte
+{
+	Red = 0,
+	Green,
+	Blue
+}
