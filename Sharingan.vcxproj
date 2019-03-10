@@ -74,6 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LibraryPath>$(MSBuildProgramFiles32)\Microsoft SDKs\Windows\v7.1A\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>E:\Dev\Sharingan\proj.win32;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -153,6 +154,8 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\Tetris.cpp" />
+    <ClCompile Include="Src\Game\Board.cpp" />
+    <ClCompile Include="Src\Game\Cell.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Game\Tile.cpp" />
   </ItemGroup>
@@ -160,6 +163,10 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="..\Classes\AppDelegate.h" />
     <ClInclude Include="..\Classes\Tetris.h" />
     <ClInclude Include="enu\Tetris\FlatbufferTest_generated.h" />
+    <ClInclude Include="Src\Game\Board.h" />
+    <ClInclude Include="Src\Game\Cell.h" />
+    <ClInclude Include="Src\Game\Consts.h" />
+    <ClInclude Include="Src\Game\TilePool.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\Game\Tile.h" />
   </ItemGroup>

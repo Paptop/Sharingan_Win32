@@ -24,6 +24,8 @@
     <ClCompile Include="src\Game\Tile.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="Src\Game\Board.cpp" />
+    <ClCompile Include="Src\Game\Cell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Classes\AppDelegate.h">
@@ -39,6 +41,10 @@
     <ClInclude Include="src\Game\Tile.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="Src\Game\Board.h" />
+    <ClInclude Include="Src\Game\Consts.h" />
+    <ClInclude Include="Src\Game\TilePool.h" />
+    <ClInclude Include="Src\Game\Cell.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

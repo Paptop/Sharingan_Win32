@@ -4,9 +4,9 @@
 #include "cocos2d\cocos\2d\CCSpriteFrameCache.h"
 
 
-Sha::CTile::CTile(ETile type)
+Sha::CTile::CTile()
 : Node()
-, m_eType(type)
+, m_eType(ETILECOUNT)
 , m_sprite(nullptr)
 {
 	init();
@@ -17,6 +17,18 @@ Sha::CTile::~CTile()
 
 }
 
+void Sha::CTile::SetType(ETile eType)
+{
+	reset();
+	m_eType = eType;
+
+	if (m_sprite == nullptr)
+	{
+		m_sprite = cocos2d::Sprite::createWithSpriteFrameName(GetTileType(m_eType));
+		this->addChild(m_sprite, 0);
+	}
+}
+
 void Sha::CTile::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags)
 {
 	Node::draw(renderer, transform, flags);
@@ -25,10 +37,18 @@ void Sha::CTile::draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transfor
 bool Sha::CTile::init()
 {
 	Node::init();
-	m_sprite = cocos2d::Sprite::createWithSpriteFrameName(GetTileType(m_eType));
-	this->addChild(m_sprite, 0);
-	assert(m_sprite != nullptr);
+	SetType(YELLOW_GLOSSY);
 	return true;
+}
+
+void Sha::CTile::reset()
+{
+	m_eType = ETILECOUNT;
+	if (m_sprite)
+	{
+		this->removeChild(m_sprite);
+		m_sprite = nullptr;
+	}	
 }
 
 std::string Sha::CTile::GetTileType(Sha::CTile::ETile tile) const

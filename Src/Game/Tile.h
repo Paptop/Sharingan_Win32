@@ -33,12 +33,16 @@ namespace Sha
 			ETILECOUNT
 		};
 
-		CTile(ETile type);
+		CTile();
 		~CTile();
+
+		void SetType(ETile m_eType);
 
 		// Node
 		virtual void draw(cocos2d::Renderer *renderer, const cocos2d::Mat4& transform, uint32_t flags) override;
 		virtual bool init() override;
+
+		void reset();
 
 	private:
 		std::string GetTileType(ETile tile) const;
