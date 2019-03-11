@@ -1,5 +1,6 @@
 #pragma once
 
+#include "cocos2d\cocos\math\Vec2.h"
 
 namespace Sha
 {
@@ -40,6 +41,13 @@ namespace Sha
 		CTile* GetTile() { return m_tile;  }
 
 		inline CellPos GetPos() const { return m_pos; }
+
+		cocos2d::Vec2 GetScreenPos() const;
+
+		bool HasTile() { return m_tile != nullptr;  }
+		bool GravityTileFall(Cell& target, float fDelta, const std::function<void()>& OnFinish);
+
+		inline void Reset() { m_tile = nullptr; }
 	private:
 		CTile* m_tile;
 		CellPos m_pos;

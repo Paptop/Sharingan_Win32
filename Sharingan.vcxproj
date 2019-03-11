@@ -166,6 +166,7 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)\Resources\" /D /E /I /F /Y
     <ClInclude Include="Src\Game\Board.h" />
     <ClInclude Include="Src\Game\Cell.h" />
     <ClInclude Include="Src\Game\Consts.h" />
+    <ClInclude Include="Src\Game\TetraTile.h" />
     <ClInclude Include="Src\Game\TilePool.h" />
     <ClInclude Include="src\main.h" />
     <ClInclude Include="src\Game\Tile.h" />

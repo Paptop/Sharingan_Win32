@@ -132,8 +132,49 @@ void Sha::Cell::SetTile(CTile* tile)
 {
 	m_tile = tile;
 	cocos2d::Vec2 pos = m_tile->getPosition();
+	pos.x = 0;
+	pos.y = 0;
+
 	pos.x += 32 * m_pos.m_col + 16;
 	pos.y += 32 * m_pos.m_row + 16;
 	m_tile->setPosition(pos);
 }
+
+cocos2d::Vec2 Sha::Cell::GetScreenPos() const
+{
+	cocos2d::Vec2 pos;
+	pos.x = 32 * m_pos.m_col + 16;
+	pos.y = 32 * m_pos.m_row + 16;
+	return pos;
+}
+
+float fLerp(float value, float target , float alpha)
+{
+	return  value * (1.f - alpha) + target * alpha;
+}
+
+bool Sha::Cell::GravityTileFall(Cell& target, float fDelta, const std::function<void()>& OnFinish)
+{
+	cocos2d::Vec2 pos = m_tile->getPosition();
+	cocos2d::Vec2 vtarget = target.GetScreenPos();
+	float distance = pos.getDistanceSq(vtarget);
+
+	cocos2d::Vec2 oldPos = m_tile->getPosition();
+	oldPos.y -= fDelta;
+
+	m_pos.m_row = (int)(oldPos.y / 32.0f);
+	m_tile->setPosition(oldPos);
+
+	if (distance == 0.0f)
+	{
+		target.SetTile(m_tile);
+		m_tile = nullptr;
+		OnFinish();
+		return true;
+	}
+
+	return false;
+}
+
+
 

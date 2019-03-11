@@ -4,8 +4,10 @@
 #include "Src\Game\Cell.h"
 #include "Src\Game\Consts.h"
 #include "Src\Game\TilePool.h"
+#include "Src\Game\TetraTile.h"
 
 #include "cocos2d\cocos\2d\CCScene.h"
+
 
 namespace cocos2d
 {
@@ -25,6 +27,8 @@ namespace Sha
 
 		virtual void update(float fDelta) override;
 		virtual bool init() override;
+
+		void OnGravityFinish();
 		// Controller listener
 		void onKeyDown(cocos2d::Controller* controller, int keycode, cocos2d::Event* event);
 		void onKeyRepeat(cocos2d::Controller* controller, int keycode, cocos2d::Event* event);
@@ -39,9 +43,14 @@ namespace Sha
 		// Input
 		cocos2d::EventListenerController*	m_inputListener;
 		std::list<CTile*>		m_spawnTiles;
-		std::list<CTile*>		m_gravityTiles;
+
+		// Debug
+		Cell					m_spawnCell;
+		TetraTile				m_spawnTetra;
+
 		float m_InputX;
 		float m_InputY;
+		float m_InputTriggerLeft;
 		
 	};
 }

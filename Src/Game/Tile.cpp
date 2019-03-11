@@ -70,7 +70,7 @@ std::string Sha::CTile::GetTileType(Sha::CTile::ETile tile) const
 		case GREEN_GLOSSY:
 			return "element_green_square_glossy.png";
 		case PURPLE_GLOSSY:
-			return "element_purple_square_glossy.png";
+			return "element_purple_cube_glossy.png";
 		defaut:
 			assert(false);
 			break;

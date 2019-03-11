@@ -45,6 +45,7 @@
     <ClInclude Include="Src\Game\Consts.h" />
     <ClInclude Include="Src\Game\TilePool.h" />
     <ClInclude Include="Src\Game\Cell.h" />
+    <ClInclude Include="Src\Game\TetraTile.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">
