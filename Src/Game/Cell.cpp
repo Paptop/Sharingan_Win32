@@ -159,19 +159,20 @@ bool Sha::Cell::GravityTileFall(Cell& target, float fDelta, const std::function<
 	cocos2d::Vec2 vtarget = target.GetScreenPos();
 	float distance = pos.getDistanceSq(vtarget);
 
+	if (distance == 0.0f)
+	{
+		target.SetTile(m_tile);
+		//m_tile = nullptr;
+		//OnFinish();
+		return true;
+	}
+
 	cocos2d::Vec2 oldPos = m_tile->getPosition();
 	oldPos.y -= fDelta;
 
 	m_pos.m_row = (int)(oldPos.y / 32.0f);
 	m_tile->setPosition(oldPos);
 
-	if (distance == 0.0f)
-	{
-		target.SetTile(m_tile);
-		m_tile = nullptr;
-		OnFinish();
-		return true;
-	}
 
 	return false;
 }

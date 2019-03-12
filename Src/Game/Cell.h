@@ -38,6 +38,8 @@ namespace Sha
 		inline void SetPos(const CellPos& pos) { m_pos = pos; }
 		void SetTile(CTile* tile);
 
+		void PlaceTile(CTile* tile) { m_tile = tile; }
+
 		CTile* GetTile() { return m_tile;  }
 
 		inline CellPos GetPos() const { return m_pos; }

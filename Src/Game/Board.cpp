@@ -53,6 +53,7 @@ void Sha::Board::InitCells()
 	m_spawnCell.SetTile(pool.Alloc());
 	m_spawnCell.GetTile()->SetType(Sha::CTile::RED_GLOSSY);
 	addChild(m_spawnCell.GetTile());
+	m_spawnTetra.PostInitGraphics(&pool, this);
 	//m_spawnTiles.push_back(m_spawnCell.GetTile());
 }
 
@@ -95,47 +96,13 @@ void Sha::Board::onAxisEvent(cocos2d::Controller* controller, int value, cocos2d
 		
 		if (m_InputX >= 0.25f && !isStep)
 		{
-			cocos2d::Vec2 pos = m_spawnCell.GetTile()->getPosition();
-			pos.x += 32.0f;
-			pos.x = cocos2d::clampf(pos.x, 16.0f, 32.0f * Consts::kiCols - 16.0f);
-
-			CellPos cellpos = m_spawnCell.GetPos();
-			cellpos.m_col++;
-
-			if (cellpos.m_col >= Consts::kiCols)
-			{
-				cellpos.m_col = Consts::kiCols - 1;
-			}
-
-			if (!cells[cellpos.m_row][cellpos.m_col].HasTile())
-			{
-				m_spawnCell.GetTile()->setPosition(pos);
-				m_spawnCell.SetPos(cellpos);
-			}
+			m_spawnTetra.Move(32.0f);
 
 			isStep = true;
 		}
 		else if (m_InputX <= -0.25f && !isStep)
 		{
-			cocos2d::Vec2 pos = m_spawnCell.GetTile()->getPosition();
-			pos.x -= 32.0f;
-			pos.x = cocos2d::clampf(pos.x, 16.0f, 32.0f * Consts::kiCols);
-			m_spawnCell.GetTile()->setPosition(pos);
-
-			CellPos cellpos = m_spawnCell.GetPos();
-			cellpos.m_col--;
-
-			if (cellpos.m_col < 0)
-			{
-				cellpos.m_col = 0;
-			}
-
-			if (!cells[cellpos.m_row][cellpos.m_col].HasTile())
-			{
-				m_spawnCell.GetTile()->setPosition(pos);
-				m_spawnCell.SetPos(cellpos);
-			}
-
+			m_spawnTetra.Move(-32.0f);
 
 			isStep = true;
 		}
@@ -157,6 +124,7 @@ void Sha::Board::update(float fDelta)
 {
 	Scene::update(fDelta);
 
+	/*
 	static CellPos pos = CellPos();
 
 	if (pos != m_spawnCell.GetPos())
@@ -200,6 +168,17 @@ void Sha::Board::update(float fDelta)
 		cell.GravityTileFall(target, 32.0f, CC_CALLBACK_0(Sha::Board::OnGravityFinish,this));
 		gravityDelay = 0.0f;
 	}
+	*/
+
+	if (!m_spawnTetra.HasFallen())
+	{
+		m_spawnTetra.GravityFall(&cells, fDelta * 3.0f + m_InputTriggerLeft);
+	}
+	else
+	{
+		m_spawnTetra = TetraTile();
+		m_spawnTetra.PostInitGraphics(&pool,this);
+	}
 	
 
 }
@@ -230,6 +209,19 @@ void Sha::Board::OnGravityFinish()
 			this->removeChild(tile);
 			pool.Free(tile);
 		}
+
+		/*
+		for (int i = Consts::kiRows - 1; i >= pos.m_row; ++i)
+		{
+			for (int j = 0; j < Consts::kiCols; ++j)
+			{
+				if (cells[i][j].HasTile())
+				{
+					cells[i][j].GravityTileFall
+				}
+
+			}
+		}*/
 	}
 
 
