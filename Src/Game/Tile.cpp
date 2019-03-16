@@ -9,7 +9,7 @@ Sha::CTile::CTile()
 , m_eType(ETILECOUNT)
 , m_sprite(nullptr)
 {
-	init();
+	reset();
 }
 
 Sha::CTile::~CTile()
@@ -71,6 +71,8 @@ std::string Sha::CTile::GetTileType(Sha::CTile::ETile tile) const
 			return "element_green_square_glossy.png";
 		case PURPLE_GLOSSY:
 			return "element_purple_cube_glossy.png";
+		case IDLE:
+			return "element_neutral_square.png";
 		defaut:
 			assert(false);
 			break;

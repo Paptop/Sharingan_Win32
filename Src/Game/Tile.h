@@ -30,6 +30,7 @@ namespace Sha
 			YELLOW_GLOSSY,
 			PURPLE_GLOSSY,
 
+			IDLE,
 			ETILECOUNT
 		};
 

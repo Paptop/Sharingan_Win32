@@ -123,8 +123,9 @@ Sha::CellPos Sha::CellPos::operator --(int)
 }
 
 Sha::Cell::Cell()
-: m_pos(-1,-1)
+: m_pos(-1, -1)
 , m_tile(nullptr)
+, m_idle(nullptr)
 {
 }
 
@@ -148,34 +149,49 @@ cocos2d::Vec2 Sha::Cell::GetScreenPos() const
 	return pos;
 }
 
-float fLerp(float value, float target , float alpha)
+bool Sha::Cell::GravityTileFall(Cell (*cells)[Consts::kiRows][Consts::kiCols], float fDelta, const std::function<void()>& OnFinish)
 {
-	return  value * (1.f - alpha) + target * alpha;
-}
+	const CellPos dir = { -1,0 };
 
-bool Sha::Cell::GravityTileFall(Cell& target, float fDelta, const std::function<void()>& OnFinish)
-{
-	cocos2d::Vec2 pos = m_tile->getPosition();
-	cocos2d::Vec2 vtarget = target.GetScreenPos();
-	float distance = pos.getDistanceSq(vtarget);
+	CellPos newPos = m_pos;
+	newPos += dir;
 
-	if (distance == 0.0f)
+	if ( (newPos.Evaluate() && (*cells)[newPos.m_row][newPos.m_col].HasTile()) || (!newPos.Evaluate()))
 	{
-		target.SetTile(m_tile);
-		//m_tile = nullptr;
-		//OnFinish();
+		OnFinish();
 		return true;
 	}
-
-	cocos2d::Vec2 oldPos = m_tile->getPosition();
-	oldPos.y -= fDelta;
-
-	m_pos.m_row = (int)(oldPos.y / 32.0f);
-	m_tile->setPosition(oldPos);
-
 
 	return false;
 }
 
+void Sha::Cell::ApplyGravity(float fDelta)
+{
+	const CellPos dir = { -1,0 };
+
+	CellPos newPos = m_pos;
+	newPos += dir;
+
+	cocos2d::Vec2 oldPos = m_tile->getPosition();
+	oldPos.y -= fDelta;
+	m_tile->setPosition(oldPos);
+	m_pos = newPos;
+}
+
+void Sha::Cell::SetIdleBack(CTile* tile, cocos2d::Node* node)
+{
+	m_idle = tile;
+	tile->SetType(Sha::CTile::IDLE);
+
+	cocos2d::Vec2 pos = m_idle->getPosition();
+	pos.x = 0;
+	pos.y = 0;
+
+	pos.x += 32 * m_pos.m_col + 16;
+	pos.y += 32 * m_pos.m_row + 16;
+	m_idle->setPosition(pos);
+
+	node->addChild(tile);
+}
 
 

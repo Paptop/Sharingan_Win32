@@ -4,7 +4,7 @@
 
 #include "Src/Game/Tile.h"
 
-#define TILES_COUT 400
+#define TILES_COUT 500
 
 namespace Sha
 {
@@ -26,6 +26,7 @@ namespace Sha
 			else
 			{
 				CTile* tile = tiles.front();
+				tile->init();
 				tiles.pop_front();
 				return tile;
 			}

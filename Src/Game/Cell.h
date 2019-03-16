@@ -1,6 +1,12 @@
 #pragma once
 
+#include "Src\Game\Consts.h"
 #include "cocos2d\cocos\math\Vec2.h"
+
+namespace cocos2d
+{
+	class Node;
+}
 
 namespace Sha
 {
@@ -37,6 +43,7 @@ namespace Sha
 		Cell();
 		inline void SetPos(const CellPos& pos) { m_pos = pos; }
 		void SetTile(CTile* tile);
+		void SetIdleBack(CTile* tile, cocos2d::Node* node);
 
 		void PlaceTile(CTile* tile) { m_tile = tile; }
 
@@ -47,10 +54,12 @@ namespace Sha
 		cocos2d::Vec2 GetScreenPos() const;
 
 		bool HasTile() { return m_tile != nullptr;  }
-		bool GravityTileFall(Cell& target, float fDelta, const std::function<void()>& OnFinish);
+		bool GravityTileFall(Cell (*cells)[Consts::kiRows][Consts::kiCols], float fDelta, const std::function<void()>& OnFinish);
+		void ApplyGravity(float fDelta);
 
 		inline void Reset() { m_tile = nullptr; }
 	private:
+		CTile* m_idle;
 		CTile* m_tile;
 		CellPos m_pos;
 	};

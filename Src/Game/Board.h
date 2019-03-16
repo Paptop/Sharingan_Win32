@@ -25,19 +25,28 @@ namespace Sha
 		Board();
 		~Board();
 
+		static cocos2d::Scene* createScene();
+
 		virtual void update(float fDelta) override;
 		virtual bool init() override;
+		virtual void onEnter() override;
 
 		void OnGravityFinish();
+
+		void Debug_OutputBoard();
+
 		// Controller listener
 		void onKeyDown(cocos2d::Controller* controller, int keycode, cocos2d::Event* event);
 		void onKeyRepeat(cocos2d::Controller* controller, int keycode, cocos2d::Event* event);
 		void onAxisEvent(cocos2d::Controller*, int value, cocos2d::Event* event);
 
+		CREATE_FUNC(Board);
+
 	private:
 		void InitCells();
 
 	private:
+		Node					m_board;
 		Cell					cells[Consts::kiRows][Consts::kiCols];
 		TilePool				pool;
 		// Input
