@@ -14,19 +14,20 @@ namespace Sha
 	struct TetraTile
 	{
 	public:
-		std::vector<Cell> tetraCells;
+		std::vector<Cell> _tetraCells;
+		int				  _originIndex;
 
 		void Reset()
 		{
 			isFallen = false;
-			tetraCells.clear();
+			_tetraCells.clear();
 		}
 
 		void Init()
 		{
 			std::random_device rd;  
 			std::mt19937 gen(rd());
-			std::uniform_int_distribution<> dis(0, 1);
+			std::uniform_int_distribution<> dis(2, 2);
 			std::uniform_int_distribution<> disX(0, Consts::kiCols - 1);
 
 			int tetraType = dis(gen);
@@ -37,34 +38,65 @@ namespace Sha
 				case 0:
 					//	[*][*]
 					//	[*][*]
-
+					
 					if (xPos == Consts::kiCols - 1)
 					{
 						xPos = Consts::kiCols - 2;
 					}
 
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 1, xPos });
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 1, xPos + 1});
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 2, xPos});
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 2, xPos + 1});
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 1 - 5, xPos });
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 1 - 5, xPos + 1});
+
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 2 - 5, xPos});
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 2 - 5, xPos + 1});
+
+					_originIndex = 1;
+
 					break;
 				case 1:
 					//	[*]
 					//	[*]
 					//  [*]
 					//  [*]
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 1, xPos });
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 2, xPos});
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 3, xPos});
-					tetraCells.push_back(Cell());
-					tetraCells.back().SetPos({ (int)Consts::kiRows - 4, xPos});
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 1 - 5, xPos });
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 2 - 5, xPos});
+
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 3 - 5, xPos});
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 4 - 5, xPos});
+
+					_originIndex = 1;
+					break;
+
+				case 2:
+
+					//	[*]
+					//	[*]
+					//  [*][*]
+
+					if (xPos == Consts::kiCols - 1)
+					{
+						xPos = Consts::kiCols - 2;
+					}
+
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 1 - 5, xPos });
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 2 - 5, xPos });
+
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 3 - 5, xPos });
+					_tetraCells.push_back(Cell());
+					_tetraCells.back().SetPos({ (int)Consts::kiRows - 3 - 5, xPos + 1});
+
+					_originIndex = 1;
 					break;
 				default:
 					assert(false);
@@ -73,20 +105,20 @@ namespace Sha
 
 		void PostInitGraphics(TilePool* pool, cocos2d::Node* scene)
 		{
-			for (Cell& cell: tetraCells)
+			for (Cell& cell: _tetraCells)
 			{
 				cell.SetTile(pool->Alloc());
 				scene->addChild(cell.GetTile());
 			}
 
-			tetraCells.back().GetTile()->SetType(Sha::CTile::ETile::RED);
+			_tetraCells.back().GetTile()->SetType(Sha::CTile::ETile::RED);
 		}
 
 		void Move(Cell (*cells)[Consts::kiRows][Consts::kiCols], float offset)
 		{
 			std::vector<std::pair<CellPos, cocos2d::Vec2> > newData;
 
-			for (Cell& cell : tetraCells)
+			for (Cell& cell : _tetraCells)
 			{
 				cocos2d::Vec2 pos = cell.GetTile()->getPosition();
 				pos.x += offset;
@@ -109,15 +141,15 @@ namespace Sha
 				newData.push_back({ cellpos, pos });
 			}
 
-			assert(newData.size() == tetraCells.size());
+			assert(newData.size() == _tetraCells.size());
 
-			for (int i = 0; i < tetraCells.size(); ++i)
+			for (int i = 0; i < _tetraCells.size(); ++i)
 			{
 				const CellPos pos = newData[i].first;
 				const cocos2d::Vec2 vpos = newData[i].second;
 
-				tetraCells[i].GetTile()->setPosition(vpos);
-				tetraCells[i].SetPos(pos);
+				_tetraCells[i].GetTile()->setPosition(vpos);
+				_tetraCells[i].SetPos(pos);
 			}
 		}
 
@@ -132,7 +164,7 @@ namespace Sha
 
 			bool bStopGravity = false;
 
-			for (auto cell = tetraCells.rbegin(); cell != tetraCells.rend(); ++cell)
+			for (auto cell = _tetraCells.rbegin(); cell != _tetraCells.rend(); ++cell)
 			{
 				bStopGravity |= cell->GravityTileFall(cells, 32.0f, CC_CALLBACK_0(Sha::TetraTile::OnGravityFinish, this));
 				m_fgravityDelay = 0.0f;
@@ -140,7 +172,7 @@ namespace Sha
 
 			if (!bStopGravity)
 			{
-				for (auto cell = tetraCells.rbegin(); cell != tetraCells.rend(); ++cell)
+				for (auto cell = _tetraCells.rbegin(); cell != _tetraCells.rend(); ++cell)
 				{
 					cell->ApplyGravity(32.0f);
 				}
@@ -149,7 +181,7 @@ namespace Sha
 			{
 				assert(isFallen == false);
 				isFallen = true;
-				for (auto cell = tetraCells.rbegin(); cell != tetraCells.rend(); cell++)
+				for (auto cell = _tetraCells.rbegin(); cell != _tetraCells.rend(); cell++)
 				{
 					Cell& currentCell = (*cells)[cell->GetPos().m_row][cell->GetPos().m_col];
 					currentCell.SetTile(cell->GetTile());
@@ -159,10 +191,47 @@ namespace Sha
 
 		bool HasFallen() const { return isFallen; }
 
+		void Flip90()
+		{
+			// Translate to 0,0 rotate translate back to origin
+			/*
+				Matrix
+				|  0  1 |
+				| -1  0 |
+			*/
+			static int flipCount = 0;
+
+			cocos2d::Vec2 originPoint = _tetraCells[_originIndex].GetPoint(0);
+
+			for (Cell& cell : _tetraCells)
+			{
+				/*
+				CellPos newPos = cell.GetPos();
+				newPos -= _originPoint;
+				newPos.Mult(0, 1, -1, 0);
+				newPos += _originPoint;
+				cell.SetPos(newPos);
+				cell.SetTile(cell.GetTile());
+				*/
+				float originX = originPoint.x;
+				float originY = originPoint.y;
+				cell.Translate(-originX, -originY);
+				cell.Mult(0, 1, -1, 0);
+				cell.Translate(originX, originY);
+				cocos2d::Vec2 vec = cell.GetPoint(0);
+				cell.SetPos({ (int)vec.y, (int)vec.x });
+				cell.SetTile(cell.GetTile());
+			}
+
+			flipCount++;
+			flipCount %= 4;
+		}
+
 		TetraTile()
 		: m_fgravityDelay(0.0f)
 		, m_fgravityBound(1.0f)
 		, isFallen(false)
+		, _originIndex(-1)
 		{
 			Init();
 		}

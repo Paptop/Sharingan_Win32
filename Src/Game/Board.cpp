@@ -85,7 +85,7 @@ void  Sha::Board::onKeyDown(cocos2d::Controller* controller, int keycode, cocos2
 {
 	if (keycode == 0)
 	{
-		
+		m_spawnTetra.Flip90();
 	}
 	else if (keycode == 1)
 	{
@@ -145,6 +145,7 @@ void Sha::Board::onAxisEvent(cocos2d::Controller* controller, int value, cocos2d
 void Sha::Board::update(float fDelta)
 {
 	Scene::update(fDelta);
+	//return;
 
 	static bool bUpdateGravity = false;
 
@@ -216,6 +217,7 @@ void Sha::Board::update(float fDelta)
 		}
 		
 	}
+
 
 	bUpdateGravity = false;
 }

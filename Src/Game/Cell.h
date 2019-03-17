@@ -17,6 +17,9 @@ namespace Sha
 		CellPos(int row, int col);
 		CellPos();
 		bool Evaluate() const;
+		void Transpose();
+		// Matrix mult
+		void Mult(int a0, int a1, int b1, int b0);
 		bool operator ==(const CellPos& pos);
 		bool operator !=(const CellPos& pos);
 		CellPos& operator +=(const CellPos& pos);
@@ -41,11 +44,15 @@ namespace Sha
 	{
 	public:
 		Cell();
-		inline void SetPos(const CellPos& pos) { m_pos = pos; }
+		void SetPos(const CellPos& pos);
 		void SetTile(CTile* tile);
 		void SetIdleBack(CTile* tile, cocos2d::Node* node);
 
 		void PlaceTile(CTile* tile) { m_tile = tile; }
+
+		void Mult(float a0, float a1, float b0, float b1);
+		void Translate(float fDeltaX, float fDeltaY);
+		cocos2d::Vec2 GetPoint(int index);
 
 		CTile* GetTile() { return m_tile;  }
 
@@ -59,8 +66,18 @@ namespace Sha
 
 		inline void Reset() { m_tile = nullptr; }
 	private:
-		CTile* m_idle;
-		CTile* m_tile;
-		CellPos m_pos;
+		CTile*			m_idle;
+		CTile*			m_tile;
+		CellPos			m_pos;
+		/*
+		 [3]		[2]
+		(1,0)     (1,1)
+			* --- *
+			|(0,0)|
+			* --- *
+		 (0,0)    (1,0)
+		  [0]       [1]
+		*/
+		cocos2d::Vec2 m_points[4];
 	};
 }

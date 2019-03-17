@@ -4,7 +4,7 @@
 
 #include "Src/Game/Tile.h"
 
-#define TILES_COUT 500
+#define TILES_COUT 900
 
 namespace Sha
 {
