@@ -85,7 +85,7 @@ void  Sha::Board::onKeyDown(cocos2d::Controller* controller, int keycode, cocos2
 {
 	if (keycode == 0)
 	{
-		m_spawnTetra.Flip90();
+		m_spawnTetra.Flip90(&cells);
 	}
 	else if (keycode == 1)
 	{
